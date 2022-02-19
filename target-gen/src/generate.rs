@@ -131,6 +131,7 @@ where
             .iter()
             .map(create_core)
             .collect::<Result<Vec<_>>>()?;
+        println!("{:?}", cores.len());
 
         family.variants.push(Chip {
             name: device_name,

@@ -8,6 +8,7 @@ use crate::{Core, Error};
 
 pub const _ITM_PID: [u8; 8] = [0x1, 0xB0, 0x3b, 0x0, 0x4, 0x0, 0x0, 0x0];
 
+/// An interface to control the ITM of a MCU.
 pub struct Itm<'probe: 'core, 'core> {
     component: &'core Component,
     core: &'core mut Core<'probe>,
@@ -18,10 +19,12 @@ const REGISTER_OFFSET_ITM_TCR: u32 = 0xE80;
 const REGISTER_OFFSET_ACCESS: u32 = 0xFB0;
 
 impl<'probe: 'core, 'core> Itm<'probe, 'core> {
+    /// Create a new ITM interface from a probe and a ROM table component.
     pub fn new(core: &'core mut Core<'probe>, component: &'core Component) -> Self {
         Itm { component, core }
     }
 
+    /// Unlock the ITM and enable it for tracing the target.
     pub fn unlock(&mut self) -> Result<(), Error> {
         self.component
             .write_reg(self.core, REGISTER_OFFSET_ACCESS, 0xC5AC_CE55)?;
@@ -29,6 +32,7 @@ impl<'probe: 'core, 'core> Itm<'probe, 'core> {
         Ok(())
     }
 
+    /// Enable the ITM TX to send tracing data to the TPIU.
     pub fn tx_enable(&mut self) -> Result<(), Error> {
         let mut value = self
             .component
