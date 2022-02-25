@@ -13,11 +13,15 @@ use crate::{Error, Memory, MemoryInterface};
 use anyhow::{anyhow, Result};
 use std::time::Duration;
 
+/// A core register (e.g. Stack Pointer).
 pub trait CoreRegister: Clone + From<u32> + Into<u32> + Sized + std::fmt::Debug {
+    /// The register's address.
     const ADDRESS: u32;
+    /// The register's name.
     const NAME: &'static str;
 }
 
+/// The address of a core register.
 #[derive(Debug, Copy, Clone, PartialEq, Eq, Hash)]
 pub struct CoreRegisterAddress(pub u16);
 
@@ -32,11 +36,15 @@ impl From<u16> for CoreRegisterAddress {
         CoreRegisterAddress(value)
     }
 }
+
+/// An struct for storing the current state of a core.
 #[derive(Debug, Clone)]
 pub struct CoreInformation {
+    /// The current Program Counter.
     pub pc: u32,
 }
 
+/// Describes a register with its properties.
 #[derive(Debug, Clone, PartialEq)]
 pub struct RegisterDescription {
     pub(crate) name: &'static str,

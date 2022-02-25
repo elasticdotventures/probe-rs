@@ -67,6 +67,8 @@ extern crate serde;
 
 pub mod architecture;
 pub mod config;
+
+#[warn(missing_docs)]
 mod core;
 pub mod debug;
 mod error;
